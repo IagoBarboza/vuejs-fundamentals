@@ -1,0 +1,101 @@
+#1 Getting Started With Vue.js
+
+  * Include VueJS script from CDN
+  * Template syntax => {{ header }}
+  * Reactivity system => <input v-model="header">
+  * Vue instance manipulation on the console => shoppingList.$data.header = 'whatever'
+
+
+#2 Vue.js Template Syntax and Expressions => Use JS expressions inside of {{ }}
+  * {{ header.toLocaleUpperCase() }}
+  * One expression at a time => {{ header; header.toLocaleUpperCase(); }} is not going to work
+  * "If" statements doesn't work => {{ if(header) { return 'welcome' } }}
+  * "Ternary" statements works => {{ header ? header : 'welcome' }}
+
+
+#3 List rendering
+  * Add an array of items on the data
+  * Use the "v-for" directive to render the list
+  * "v-for" is reactive => Don't need to manipulate the DOM when the list changes (Push a new item to verify)
+
+    
+#4 User Inputs & Vue Devtools
+  * Add the "newItem" data prop
+  * Add the <input v-model="newItem" type="text" placeholder="Add an item">
+  * Do shoppingList.$data.newItem = "yeah" to show the reactivity also works on the v-model
+  * Install Vue Dev Tools chrome extension
+    => Show the vue instances on the "Vue" tab
+    => Show the reactivity working from v-model to $vm0.data.newItem
+
+
+#5 User Events
+  * VDT indexes vue instances on the console for us ($vm0, $vm1, ...) so that we can manipulate them
+  * Manipulate a vue instance => $vm0.newItem = "year" + $vm0.items.push($vm0.newItem)
+  * Add the <div class="add-item-form"> 
+  * Move the "newItem" input to the "add-item-form"
+  * Add the <button class="btn btn-primary">Save Item</button> on the "add-item-form"
+  * Use the "v-on:click" directive on the button to listen the click event and add the new item on the list
+  * Use the "v-on:keyup.enter" directive on the input to listen the keyup.enter event and add the new item on the list
+  * Vue responds to all javacript events
+  * "v-on" short syntax => "@" 
+  * Replace the "v-on's" by "@'s"
+
+
+#6 Vue Methods
+  * Let's move the code that pushes the "newItem" on the "list" to a method
+  * Define the methods attribute on the vue instance
+  * Add the "saveItem" function in the methods attribute
+  * To access the "items" instance data inside of the "saveItem" method, use "this.items" (The same for "newItem")
+  * Call the saveItem in the both "v-on's" (Dry up the code)
+  * Clear the "newItem" after add it on the list
+  * Test the method funcionality direct on the console using the $vm0
+
+
+#7 Conditional Rendering
+  * "v-if" and "v-else" directives
+  * Add the "state" data prop (Default value is 'default')
+  * Add the v-if="state === 'edit'" on the "add-item-form"
+  * Verify that the buttons has their existences toggled in the dom (<----->)
+  * Set $vm0.state = 'edit' to show the "add-item-form"
+  * Creates the <div class="header"> and moves the h1 to it
+  * Create the "add item" and "cancel" buttons in the "header" div
+  * Use v-if="state === 'default'" on the "add item" button
+  * Use the v-else on the "cancel" button
+  * Add the "changeState" method and use it to change the this.state to the value of the param
+  * Add the "@click="changeState('edit')" on the "add item" button
+  * Add the "@click="changeState('default')" on the "cance" button
+  
+
+#8 Attribute Binding
+  * "v-bind" directive
+  * Bind the attribute "disabled" of "save-item" button to the length of the newItem (if it is null => disabled is true)  
+  * "v-bind" short-hand => ":" 
+
+
+#9 Dynamic Classes
+  * "v-bind" (:) directive aplied in the "class" attribute => ":class" 
+  * Transform the array of items in array of objects following the template => { label: 'product', purchased: false }
+  * Update the list rendering to show {{ item.label }}
+  * Update the saveItem() to add an object in the items array instead of adding a string
+  * Two ways for adding dynamic classes
+    - Object syntax => :class="{strikeout: item.purchased}" 
+    - Array Syntax => :class="[item.purchased ? 'strikeout' : '']" (+ Verbose)
+  * Multiple classes are allowed
+  * Add the "hightPriority" boolean property on each item in the list
+  * Add the dynamic class "priority" based on the property "hightPriority"
+  * Create a method to change the items' property purchased
+  * Add the @click="togglePurchased(item)" on items of the "ul"
+
+
+#10 Computed properties
+  * Encapsulates data properties transformations or calculations for presentation
+  * Ex: A computed property that calculates the length of an input
+  * Create a computed property called "characterCount" that is the length of the "newItem" data property
+  * Add the <p>{{ characterCount }}/200</p> tag bellow the "newItem" input to the user how many characters he have left
+  * Create and use the computed property "reversedItems" to invert the order of the rendered items
+  * Take care to don't change the value of the used data property
+  * Use the "reversedItems" computed property on the "v-for"
+  * Veriy the reactivity is working property (Changes on "items" are applied on the "reversedItems")
+  * Methods Vs Computed properties
+    - Method => Change a data property
+    - Computed property => Change the presentation of a data property (Doesn't change the data property )
